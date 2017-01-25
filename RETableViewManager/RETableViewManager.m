@@ -230,6 +230,61 @@
     cell.section = section;
     cell.item = item;
     cell.detailTextLabel.text = nil;
+	
+    if (tableView == self.tableView && item.showSectionBorder) {
+        
+        CGFloat cornerRadius = 0.f;
+        
+        cell.backgroundColor = UIColor.clearColor;
+        
+        CAShapeLayer *layer = [[CAShapeLayer alloc] init];
+        
+        CGMutablePathRef pathRef = CGPathCreateMutable();
+        
+        CGSize tableViewSize = tableView.frame.size;
+        CGFloat cellHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath ];
+        
+        CGRect bounds = CGRectMake(item.borderInset.left, 0, tableViewSize.width - item.borderInset.left - item.borderInset.right, cellHeight);
+        
+        
+        if (indexPath.row == 0 && indexPath.row == [tableView numberOfRowsInSection:indexPath.section]-1) {
+            
+            CGPathAddRoundedRect(pathRef, nil, bounds, cornerRadius, cornerRadius);
+            
+        } else if (indexPath.row == 0) {
+            CGPathMoveToPoint(pathRef, nil, bounds.origin.x , bounds.size.height);
+            CGPathAddLineToPoint(pathRef, nil, bounds.origin.x, 0);
+            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, 0);
+            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, bounds.size.height);
+            
+        } else if (indexPath.row == [tableView numberOfRowsInSection:indexPath.section]-1) {
+            CGPathMoveToPoint(pathRef, nil, bounds.origin.x, 0);
+            CGPathAddLineToPoint(pathRef, nil, bounds.origin.x , bounds.size.height);
+            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, bounds.size.height);
+            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, 0);
+          
+        } else {
+            
+            CGPathMoveToPoint(pathRef, nil, bounds.origin.x, 0);
+            CGPathAddLineToPoint(pathRef, nil, bounds.origin.x , bounds.size.height);
+            CGPathMoveToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, bounds.size.height);
+            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, 0);
+            
+            
+        }
+        
+        layer.path = pathRef;
+        
+        CFRelease(pathRef);
+        
+        layer.fillColor = [UIColor clearColor].CGColor;
+        layer.strokeColor = item.borderColor.CGColor;
+        layer.lineWidth = item.borderWidth;
+        
+        [cell.layer addSublayer:layer];
+        
+        
+    }
     
     if ([item isKindOfClass:[RETableViewItem class]])
         cell.detailTextLabel.text = ((RETableViewItem *)item).detailLabelText;
