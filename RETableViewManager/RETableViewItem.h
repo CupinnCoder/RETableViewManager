@@ -55,6 +55,10 @@
 @property (copy, readwrite, nonatomic) void (^pasteHandler)(id item);
 @property (assign, readwrite, nonatomic) CGFloat cellHeight;
 @property (copy, readwrite, nonatomic) NSString *cellIdentifier;
+@property (nonatomic, assign, readwrite) BOOL showSectionBorder;
+@property (nonatomic, strong) UIColor *borderColor;
+@property (nonatomic, assign) CGFloat borderWidth;
+@property (nonatomic, assign) UIEdgeInsets borderInset;
 
 // Action bar
 @property (copy, readwrite, nonatomic) void (^actionBarNavButtonTapHandler)(id item); //handler for nav button on ActionBar
