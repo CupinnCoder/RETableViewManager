@@ -59,6 +59,9 @@
 @property (nonatomic, strong) UIColor *borderColor;
 @property (nonatomic, assign) CGFloat borderWidth;
 @property (nonatomic, assign) UIEdgeInsets borderInset;
+@property (nonatomic, assign) CGFloat cornerRadius;
+@property (nonatomic, strong) UIColor *cellBgColor;
+@property (nonatomic, assign) BOOL cellBySection;
 
 // Action bar
 @property (copy, readwrite, nonatomic) void (^actionBarNavButtonTapHandler)(id item); //handler for nav button on ActionBar
