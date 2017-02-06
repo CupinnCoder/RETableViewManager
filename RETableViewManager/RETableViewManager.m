@@ -249,19 +249,78 @@
         
         if (indexPath.row == 0 && indexPath.row == [tableView numberOfRowsInSection:indexPath.section]-1) {
             
-            CGPathAddRoundedRect(pathRef, nil, bounds, cornerRadius, cornerRadius);
+if (tableView == self.tableView && item.showSectionBorder) {
+        
+        CGFloat cornerRadius = item.cornerRadius;
+        
+        cell.backgroundColor = UIColor.clearColor;
+        
+        CAShapeLayer *layer = [[CAShapeLayer alloc] init];
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        
+        CGMutablePathRef pathRef = CGPathCreateMutable();
+        
+        CGSize tableViewSize = tableView.frame.size;
+        CGFloat cellHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath ];
+        
+        CGRect bounds = CGRectMake(item.borderInset.left, 0, tableViewSize.width - item.borderInset.left - item.borderInset.right, cellHeight);
+        
+        
+        if (indexPath.row == 0 && indexPath.row == [tableView numberOfRowsInSection:indexPath.section]-1) {
+            
+            
+            if (item.cellBySection) {
+                CGPathMoveToPoint(pathRef, nil, bounds.origin.x, 0);
+                CGPathAddLineToPoint(pathRef, nil, bounds.origin.x , bounds.size.height);
+                CGPathMoveToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, bounds.size.height);
+                CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, 0);
+                
+                UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii:CGSizeMake(0, 0)];
+                maskLayer.frame = layer.frame;
+                maskLayer.path = maskPath.CGPath;
+                maskLayer.fillColor = item.cellBgColor.CGColor;
+//                CFRelease((__bridge CFTypeRef)(maskPath));
+                [cell.layer insertSublayer:maskLayer atIndex:0];
+            }else {
+                CGPathAddRoundedRect(pathRef, nil, bounds, cornerRadius, cornerRadius);
+            }
+            
+            
             
         } else if (indexPath.row == 0) {
+//            CGPathMoveToPoint(pathRef, nil, bounds.origin.x , bounds.size.height);
+//            CGPathAddLineToPoint(pathRef, nil, bounds.origin.x, 0);
+//            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, 0);
+//            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, bounds.size.height);
             CGPathMoveToPoint(pathRef, nil, bounds.origin.x , bounds.size.height);
-            CGPathAddLineToPoint(pathRef, nil, bounds.origin.x, 0);
-            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, 0);
+            CGPathAddArcToPoint(pathRef, nil, bounds.origin.x, 0, bounds.origin.x + bounds.size.width, 0, cornerRadius);
+            CGPathAddArcToPoint(pathRef, nil, bounds.origin.x + bounds.size.width, 0, bounds.origin.x + bounds.size.width, bounds.size.height, cornerRadius);
             CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, bounds.size.height);
             
+            UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
+            maskLayer.frame = layer.frame;
+            maskLayer.path = maskPath.CGPath;
+            maskLayer.fillColor = item.cellBgColor.CGColor;
+//            CFRelease((__bridge CFTypeRef)(maskPath));
+            [cell.layer insertSublayer:maskLayer atIndex:0];
+            
+            
         } else if (indexPath.row == [tableView numberOfRowsInSection:indexPath.section]-1) {
+//            CGPathMoveToPoint(pathRef, nil, bounds.origin.x, 0);
+//            CGPathAddLineToPoint(pathRef, nil, bounds.origin.x , bounds.size.height);
+//            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, bounds.size.height);
+//            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, 0);
             CGPathMoveToPoint(pathRef, nil, bounds.origin.x, 0);
-            CGPathAddLineToPoint(pathRef, nil, bounds.origin.x , bounds.size.height);
-            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, bounds.size.height);
-            CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, 0);
+            CGPathAddArcToPoint(pathRef, nil, bounds.origin.x, bounds.size.height, bounds.size.width + bounds.origin.x, bounds.size.height, cornerRadius);
+            CGPathAddArcToPoint(pathRef, nil, bounds.origin.x + bounds.size.width, bounds.size.height, bounds.origin.x + bounds.size.width, 0, cornerRadius);
+            CGPathAddLineToPoint(pathRef, nil, bounds.origin.x + bounds.size.width, 0);
+            
+            UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
+            maskLayer.frame = layer.frame;
+            maskLayer.path = maskPath.CGPath;
+            maskLayer.fillColor = item.cellBgColor.CGColor;
+//            CFRelease((__bridge CFTypeRef)(maskPath));
+            [cell.layer insertSublayer:maskLayer atIndex:0];
           
         } else {
             
@@ -270,6 +329,12 @@
             CGPathMoveToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, bounds.size.height);
             CGPathAddLineToPoint(pathRef, nil, bounds.size.width + bounds.origin.x, 0);
             
+            UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii:CGSizeMake(0, 0)];
+            maskLayer.frame = layer.frame;
+            maskLayer.path = maskPath.CGPath;
+            maskLayer.fillColor = item.cellBgColor.CGColor;
+//            CFRelease((__bridge CFTypeRef)(maskPath));
+            [cell.layer insertSublayer:maskLayer atIndex:0];
             
         }
         
@@ -282,6 +347,8 @@
         layer.lineWidth = item.borderWidth;
         
         [cell.layer addSublayer:layer];
+       
+        
         
         
     }
