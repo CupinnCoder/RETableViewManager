@@ -88,6 +88,11 @@
     self.enabled = YES;
     self.cellHeight = 0;
     self.selectionStyle = UITableViewCellSelectionStyleBlue;
+    self.borderColor = [UIColor clearColor];
+    self.borderInset = UIEdgeInsetsZero;
+    self.borderWidth = 0;
+    self.cornerRadius = 0;
+    self.cellBgColor = [UIColor clearColor];
     
     return self;
 }
