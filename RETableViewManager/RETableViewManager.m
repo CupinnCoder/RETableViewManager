@@ -231,25 +231,9 @@
     cell.item = item;
     cell.detailTextLabel.text = nil;
 	
-    if (tableView == self.tableView && item.showSectionBorder) {
-        
-        CGFloat cornerRadius = 0.f;
-        
-        cell.backgroundColor = UIColor.clearColor;
-        
-        CAShapeLayer *layer = [[CAShapeLayer alloc] init];
-        
-        CGMutablePathRef pathRef = CGPathCreateMutable();
-        
-        CGSize tableViewSize = tableView.frame.size;
-        CGFloat cellHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath ];
-        
-        CGRect bounds = CGRectMake(item.borderInset.left, 0, tableViewSize.width - item.borderInset.left - item.borderInset.right, cellHeight);
-        
-        
-        if (indexPath.row == 0 && indexPath.row == [tableView numberOfRowsInSection:indexPath.section]-1) {
+    
             
-if (tableView == self.tableView && item.showSectionBorder) {
+    if (tableView == self.tableView && item.showSectionBorder) {
         
         CGFloat cornerRadius = item.cornerRadius;
         
