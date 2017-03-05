@@ -267,6 +267,12 @@
                 [cell.layer insertSublayer:maskLayer atIndex:0];
             }else {
                 CGPathAddRoundedRect(pathRef, nil, bounds, cornerRadius, cornerRadius);
+		UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds cornerRadius:cornerRadius];
+                maskLayer.frame = layer.frame;
+                maskLayer.path = maskPath.CGPath;
+                maskLayer.fillColor = item.cellBgColor.CGColor;
+                //                CFRelease((__bridge CFTypeRef)(maskPath));
+                [cell.layer insertSublayer:maskLayer atIndex:0];
             }
             
             
