@@ -235,12 +235,34 @@
             
     if (tableView == self.tableView && item.showSectionBorder) {
         
+        
+        
+        
+        
         CGFloat cornerRadius = item.cornerRadius;
-        
         cell.backgroundColor = UIColor.clearColor;
-        
-        CAShapeLayer *layer = [[CAShapeLayer alloc] init];
-        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        CAShapeLayer __block *layer = nil;
+        CAShapeLayer __block *maskLayer = nil;
+        [cell.layer.sublayers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            CALayer *layertemp = (CALayer*)obj;
+            if ([layertemp.name isEqualToString:@"tf_layer1"]) {
+                 layer = layertemp;
+            }
+            if ([layertemp.name isEqualToString:@"tf_layer2"]) {
+                 maskLayer = layertemp;
+            }
+        }];
+        if (!layer) {
+            layer = [[CAShapeLayer alloc]init];
+            [cell.layer addSublayer:layer];
+        }
+        if (!maskLayer) {
+            maskLayer = [[CAShapeLayer alloc]init];
+            [cell.layer insertSublayer:maskLayer atIndex:0];
+        }
+        layer.name = @"tf_layer1";
+        maskLayer.name = @"tf_layer2";
+    
         
         CGMutablePathRef pathRef = CGPathCreateMutable();
         
@@ -264,15 +286,15 @@
                 maskLayer.path = maskPath.CGPath;
                 maskLayer.fillColor = item.cellBgColor.CGColor;
 //                CFRelease((__bridge CFTypeRef)(maskPath));
-                [cell.layer insertSublayer:maskLayer atIndex:0];
+//                [cell.layer insertSublayer:maskLayer atIndex:0];
             }else {
                 CGPathAddRoundedRect(pathRef, nil, bounds, cornerRadius, cornerRadius);
-		UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds cornerRadius:cornerRadius];
+                UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds cornerRadius:cornerRadius];
                 maskLayer.frame = layer.frame;
                 maskLayer.path = maskPath.CGPath;
                 maskLayer.fillColor = item.cellBgColor.CGColor;
                 //                CFRelease((__bridge CFTypeRef)(maskPath));
-                [cell.layer insertSublayer:maskLayer atIndex:0];
+//                [cell.layer insertSublayer:maskLayer atIndex:0];
             }
             
             
@@ -292,7 +314,7 @@
             maskLayer.path = maskPath.CGPath;
             maskLayer.fillColor = item.cellBgColor.CGColor;
 //            CFRelease((__bridge CFTypeRef)(maskPath));
-            [cell.layer insertSublayer:maskLayer atIndex:0];
+//            [cell.layer insertSublayer:maskLayer atIndex:0];
             
             
         } else if (indexPath.row == [tableView numberOfRowsInSection:indexPath.section]-1) {
@@ -310,7 +332,7 @@
             maskLayer.path = maskPath.CGPath;
             maskLayer.fillColor = item.cellBgColor.CGColor;
 //            CFRelease((__bridge CFTypeRef)(maskPath));
-            [cell.layer insertSublayer:maskLayer atIndex:0];
+//            [cell.layer insertSublayer:maskLayer atIndex:0];
           
         } else {
             
@@ -324,7 +346,7 @@
             maskLayer.path = maskPath.CGPath;
             maskLayer.fillColor = item.cellBgColor.CGColor;
 //            CFRelease((__bridge CFTypeRef)(maskPath));
-            [cell.layer insertSublayer:maskLayer atIndex:0];
+//            [cell.layer insertSublayer:maskLayer atIndex:0];
             
         }
         
@@ -336,7 +358,7 @@
         layer.strokeColor = item.borderColor.CGColor;
         layer.lineWidth = item.borderWidth;
         
-        [cell.layer addSublayer:layer];
+//        [cell.layer addSublayer:layer];
        
         
         
